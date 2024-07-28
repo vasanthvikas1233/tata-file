@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header with Search Bar, Side Nav, and Top Nav</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .header {
+            position: fixed;
+            width: calc(100% - 60px);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            z-index: 1000;
+            box-sizing: border-box;
+            margin-left: 60px;
+        }
+        .header .search-bar {
+            display: flex;
+            align-items: center;
+        }
+        .header input[type="text"] {
+            padding: 5px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            width: 200px;
+        }
+        .header input[type="submit"] {
+            padding: 5px 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            background-color: orange;
+            color: white;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .header input[type="submit"]:hover {
+            background-color: orangered;
+        }
+        .nav-bar {
+            position: fixed;
+            top: 50px;
+            width: calc(100% - 60px);
+            margin-left: 60px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            z-index: 999;
+        }
+        .nav-bar .logo {
+            width: 200px;
+        }
+        .nav-bar a {
+            color: black;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .nav-bar a:hover {
+            background-color: #575757;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 100%;
+            background-color: black;
+            color: white;
+            padding-top: 60px;
+            z-index: 900;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 16px 0;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .content {
+            margin-left: 60px;
+            padding: 20px;
+            padding-top: 120px;
+            box-sizing: border-box;
+        }
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: auto;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+        .slides img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .dots {
+            text-align: center;
+            padding: 10px;
+            background: #ddd;
+            margin-top: 10px;
+        }
+        .dot {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.6s ease;
+        }
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+        .bottom-sidebar {
+            width: 60px;
+            background-color: black;
+            color: white;
+            padding-top: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .bottom-sidebar a {
+            display: block;
+            color: white;
+            padding: 16px 0;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        .bottom-sidebar a:hover {
+            background-color: #575757;
+        }
+        .linear-images {
+            display: flex;
+            margin-top: 20px;
+            height: 150px;
+        }
+        .linear-images img {
+            display: block;
+            object-fit: cover;
+        }
+        .linear-images img:first-child {
+            width: 60%;
+        }
+        .linear-images img:not(:first-child) {
+            width: 25%;
+        }
+        .small-slider {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-top: 10px;
+        }
+        .small-slider img {
+            width: 100px;
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .small-slider img:hover {
+            transform: scale(1.1);
+        }
+        .small-slider .prev, .small-slider .next {
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 10px;
+            margin-top: -15px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            z-index: 1;
+        }
+        .small-slider .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .small-slider .prev:hover, .small-slider .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .small-slider .dots {
+            text-align: center;
+            padding: 5px;
+            background: #ddd;
+            margin-top: 5px;
+        }
+        .small-slider .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.6s ease;
+        }
+        .small-slider .active, .small-slider .dot:hover {
+            background-color: #717171;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="search-bar">
+            <form action="/search" method="get">
+                <input type="text" name="query" placeholder="Search for...">
+                <input type="submit" value="Go!">
+            </form>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <div>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#clients">Clients</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="logo">
+            <img src="th-brand-logo.png" alt="Logo" class="logo-img">
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="#home">H</a>
+        <a href="#services">S</a>
+        <a href="#clients">C</a>
+        <a href="#contact">C</a>
+    </div>
+
+    <div class="content">
+        <div class="slider">
+            <div class="slides">
+                <img src="zaxis-140h-ultra-hp-1.jpg" alt="Image 1">
+                <img src="cdb-Homepage-banner.jpg" alt="Image 2">
+                <img src="ex210-infra-banner-h.jpg" alt="Image 3">
+            </div>
+        </div>
+        <div class="dots">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+            <span class="dot" onclick="currentSlide(2)"></span> 
+            <span class="dot" onclick="currentSlide(3)"></span> 
+        </div>
+
+        <div class="bottom-sidebar">
+            <a href="#about">About</a>
+            <a href="#blog">Blog</a>
+            <a href="#careers">Careers</a>
+            <a href="#support">Support</a>
+        </div>
+
+        <div class="linear-images">
+            <img src="gi-series-band-left.jpg" alt="Linear Image 1">
+            <img src="gi-series-band-know-more.jpg" alt="Linear Image 2">
+            <img src="gi-series-download-brochure.jpg" alt="Linear Image 3">
+        </div>
+
+        <div class="small-slider" id="small-slider-1">
+            <div class="prev" onclick="plusSlides(-1, 'small-slider-1')">&#10094;</div>
+            <div class="next" onclick="plusSlides(1, 'small-slider-1')">&#10095;</div>
+            <div class="dots">
+                <span class="dot" onclick="currentSlide(1, 'small-slider-1')"></span> 
+                <span class="dot" onclick="currentSlide(2, 'small-slider-1')"></span> 
+                <span class="dot" onclick="currentSlide(3, 'small-slider-1')"></span> 
+            </div>
+            <img src="mining.jpg" alt="Small Image 1">
+            <img src="reman-center-thumb.jpg" alt="Small Image 2">
+            <img src="consite.jpg" alt="Small Image 3">
+        </div>
+
+        <div class="small-slider" id="small-slider-2">
+            <div class="prev" onclick="plusSlides(-1, 'small-slider-2')">&#10094;</div>
+            <div class="next" onclick="plusSlides(1, 'small-slider-2')">&#10095;</div>
+            <div class="dots">
+                <span class="dot" onclick="currentSlide(1, 'small-slider-2')"></span> 
+                <span class="dot" onclick="currentSlide(2, 'small-slider-2')"></span> 
+                <span class="dot" onclick="currentSlide(3, 'small-slider-2')"></span> 
+            </div>
+            <img src="lubricants.jpg" alt="Small Image 4">
+            <img src="parts.jpg" alt="Small Image 5">
+            <img src="filters.jpg" alt="Small Image 6">
+        </div>
+
+        <div class="small-slider" id="small-slider-3">
+            <div class="prev" onclick="plusSlides(-1, 'small-slider-3')">&#10094;</div>
+            <div class="next" onclick="plusSlides(1, 'small-slider-3')">&#10095;</div>
+            <div class="dots">
+                <span class="dot" onclick="currentSlide(1, 'small-slider-3')"></span> 
+                <span class="dot" onclick="currentSlide(2, 'small-slider-3')"></span> 
+                <span class="dot" onclick="currentSlide(3, 'small-slider-3')"></span> 
+            </div>
+            <img src="training.jpg" alt="Small Image 7">
+            <img src="workshop.jpg" alt="Small Image 8">
+            <img src="technical-support.jpg" alt="Small Image 9">
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = [0, 0, 0]; // Initialize slide index for each small slider
+        let smallSliderIds = ['small-slider-1', 'small-slider-2', 'small-slider-3'];
+        let slideInterval = 3000; // Interval between automatic slides (in milliseconds)
+    
+        // Function to initialize sliders
+        function initSlides() {
+            for (let i = 0; i < smallSliderIds.length; i++) {
+                showSlides(slideIndex[i] += 1, i); // Start showing slides
+                setInterval(() => plusSlides(1, i), slideInterval); // Set interval for automatic sliding
+            }
+        }
+    
+        // Function to move slides forward or backward
+        function plusSlides(n, sliderIndex) {
+            showSlides(slideIndex[sliderIndex] += n, sliderIndex);
+        }
+    
+        // Function to show a specific slide
+        function currentSlide(n, sliderIndex) {
+            showSlides(slideIndex[sliderIndex] = n, sliderIndex);
+        }
+    
+        // Function to display the current slide
+        function showSlides(n, sliderIndex) {
+            let i;
+            let slides = document.getElementById(smallSliderIds[sliderIndex]).getElementsByTagName("img");
+            let dots = document.getElementById(smallSliderIds[sliderIndex]).getElementsByClassName("dot");
+    
+            if (n > slides.length) {
+                slideIndex[sliderIndex] = 1; // Reset to the first slide if end is reached
+            }
+            if (n < 1) {
+                slideIndex[sliderIndex] = slides.length; // Go to the last slide if before the first
+            }
+    
+            // Hide all slides and remove active dot classes
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+    
+            // Display the current slide and set the corresponding dot as active
+            slides[slideIndex[sliderIndex] - 1].style.display = "block";
+            dots[slideIndex[sliderIndex] - 1].className += " active";
+        }
+    
+        // Initialize sliders when the page loads
+        window.onload = function () {
+            initSlides();
+        };
+    </script>
+    
+</body>
+</html>
